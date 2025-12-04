@@ -2,7 +2,9 @@
 
 const express = require('express');
 const app = express();
-const port = 3000;
+
+// Render передаёт порт через переменную окружения
+const PORT = process.env.PORT || 3000;
 
 // Главная страница
 app.get('/', (req, res) => {
@@ -10,6 +12,6 @@ app.get('/', (req, res) => {
 });
 
 // Запуск сервера
-app.listen(port, () => {
-  console.log(`Сервер запущен на http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Сервер запущен на http://localhost:${PORT}`);
 });
