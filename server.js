@@ -30,7 +30,7 @@ app.get('/pizza', (req, res) => {
   res.send(`
     <h1>🍕 Заказ пиццы</h1>
     <img src="/static/pizza.jpg" alt="Пицца" width="300"/>
-    <p>Цена: 250 грн</p>
+    <p>Цена: 25000 грн</p>
     <label>Количество: <input id="qty" type="number" value="1"/></label>
     <button onclick="calc()">Рассчитать</button>
     <p id="result"></p>
@@ -81,3 +81,4 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Магазин запущен на порту ${PORT}`);
 });
+
