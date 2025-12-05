@@ -2,47 +2,69 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Render передаёт порт через переменную окружения
 const PORT = process.env.PORT || 3000;
 
-// Middleware: логирование
+// Middleware для логов
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
 
+// Статические файлы (картинки, стили, скрипты)
+app.use('/static', express.static(path.join(__dirname, 'public')));
+
 // Главная страница с меню
 app.get('/', (req, res) => {
   res.send(`
-    <h1>Главная страница</h1>
-    <p>Добро пожаловать на мой сервер 🚀</p>
-    <nav>
-      <ul>
-        <li><a href="/about">О проекте</a></li>
-        <li><a href="/contact">Контакты</a></li>
-        <li><a href="/api/users">API: Пользователи</a></li>
-      </ul>
-    </nav>
+    <h1>🍴 Мини‑магазин</h1>
+    <p>Выберите категорию:</p>
+    <ul>
+      <li><a href="/pizza">Заказ пиццы</a></li>
+      <li><a href="/sushi">Заказ суши</a></li>
+    </ul>
   `);
 });
 
-// Страница "О проекте"
-app.get('/about', (req, res) => {
-  res.send('<h1>О проекте</h1><p>Этот сервер создан на Express и работает на Render.</p>');
+// Страница заказа пиццы
+app.get('/pizza', (req, res) => {
+  res.send(`
+    <h1>🍕 Заказ пиццы</h1>
+    <img src="/static/pizza.jpg" alt="Пицца" width="300"/>
+    <p>Цена: 250 грн</p>
+    <label>Количество: <input id="qty" type="number" value="1"/></label>
+    <button onclick="calc()">Рассчитать</button>
+    <p id="result"></p>
+    <script>
+      function calc() {
+        const qty = document.getElementById('qty').value;
+        const price = 250;
+        document.getElementById('result').innerText =
+          'Итого: ' + (qty * price) + ' грн';
+      }
+    </script>
+    <p><a href="/">⬅ Назад в меню</a></p>
+  `);
 });
 
-// Страница "Контакты"
-app.get('/contact', (req, res) => {
-  res.send('<h1>Контакты</h1><p>Святик: sviatik04112012@gmail.com</p>');
-});
-
-// API: список пользователей
-app.get('/api/users', (req, res) => {
-  res.json([
-    { id: 1, name: 'Alice' },
-    { id: 2, name: 'Bob' },
-    { id: 3, name: 'Святик' }
-  ]);
+// Страница заказа суши
+app.get('/sushi', (req, res) => {
+  res.send(`
+    <h1>🍣 Заказ суши</h1>
+    <img src="/static/sushi.jpg" alt="Суши" width="300"/>
+    <p>Цена: 180 грн</p>
+    <label>Количество: <input id="qty" type="number" value="1"/></label>
+    <button onclick="calc()">Рассчитать</button>
+    <p id="result"></p>
+    <script>
+      function calc() {
+        const qty = document.getElementById('qty').value;
+        const price = 180;
+        document.getElementById('result').innerText =
+          'Итого: ' + (qty * price) + ' грн';
+      }
+    </script>
+    <p><a href="/">⬅ Назад в меню</a></p>
+  `);
 });
 
 // Health check
@@ -50,13 +72,12 @@ app.get('/healthz', (req, res) => {
   res.send('OK');
 });
 
-// 404 обработка
+// 404
 app.use((req, res) => {
   res.status(404).send('<h1>404</h1><p>Страница не найдена</p>');
 });
 
-// Запуск сервера
+// Запуск
 app.listen(PORT, () => {
-  console.log(`✅ Сервер запущен на порту ${PORT}`);
+  console.log(`✅ Магазин запущен на порту ${PORT}`);
 });
-
